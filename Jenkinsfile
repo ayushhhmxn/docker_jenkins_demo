@@ -23,10 +23,8 @@ pipeline {
             }
             steps {
                 script {
-                    echo "Building Docker image: ${DOCKER_IMAGE_NAME}:${IMAGE_TAG}"
                     def app = docker.build("${DOCKER_IMAGE_NAME}:${IMAGE_TAG}")
 
-                    echo "Pushing to Docker Hub..."
                     docker.withRegistry('https://index.docker.io/v1/', 'my-docker-hub-credentials-id') {
                         app.push()
                     }
@@ -38,8 +36,14 @@ pipeline {
     }
 
     post {
-        success { echo 'Pipeline completed successfully!' }
-        failure { echo 'Pipeline failed!' }
-        always { echo 'Cleaning up...' }
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+        always {
+            echo 'Cleaning up...'
+        }
     }
 }
